@@ -7,7 +7,7 @@ const person = {
   get name() {
     return `${this.firstName} ${this.lastName}`;
   },  role: "Web Designer",
-  avatar: "/images/timi.jpeg", // path to your avatar image
+  avatar: "/images/timi-optimized.webp", // Updated to use optimized WebP version
   email: "ezekielelijahkola@gmail.com",
   location: "Africa/Lagos", // IANA time zone identifier for Nigeria/Abuja
   languages: ["English (fluent)", "Yoruba", "Hausa"], // optional: Leave the array empty if you don't want to display languages
