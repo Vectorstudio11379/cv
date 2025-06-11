@@ -1,6 +1,6 @@
 "use client";
 
-import React, { CSSProperties, useState, useRef, useEffect } from "react";
+import React, { CSSProperties, useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 
 import { Flex, Skeleton } from ".";
@@ -34,25 +34,25 @@ const SmartImage: React.FC<SmartImageProps> = ({
   const [isEnlarged, setIsEnlarged] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (enlarge) {
       setIsEnlarged(!isEnlarged);
     }
-  };
+  }, [enlarge, isEnlarged]);
+
+  const handleEscape = useCallback((event: KeyboardEvent) => {
+    if (event.key === "Escape" && isEnlarged) {
+      setIsEnlarged(false);
+    }
+  }, [isEnlarged]);
+
+  const handleWheel = useCallback((event: WheelEvent) => {
+    if (isEnlarged) {
+      setIsEnlarged(false);
+    }
+  }, [isEnlarged]);
 
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && isEnlarged) {
-        setIsEnlarged(false);
-      }
-    };
-
-    const handleWheel = (event: WheelEvent) => {
-      if (isEnlarged) {
-        setIsEnlarged(false);
-      }
-    };
-
     document.addEventListener("keydown", handleEscape);
     window.addEventListener("wheel", handleWheel, { passive: true });
 
@@ -60,7 +60,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
       document.removeEventListener("keydown", handleEscape);
       window.removeEventListener("wheel", handleWheel);
     };
-  }, [isEnlarged]);
+  }, [handleEscape, handleWheel]);
 
   useEffect(() => {
     if (isEnlarged) {

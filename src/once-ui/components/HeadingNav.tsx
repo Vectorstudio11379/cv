@@ -105,7 +105,7 @@ const HeadingNav = forwardRef<HTMLDivElement, props>(({ className, style, ...res
     };
 
     let ticking = false;
-    const handleScroll = () => {
+    const handleScroll = useCallback(() => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           findActiveHeading();
@@ -113,7 +113,7 @@ const HeadingNav = forwardRef<HTMLDivElement, props>(({ className, style, ...res
         });
         ticking = true;
       }
-    };
+    }, [findActiveHeading]);
 
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -162,7 +162,7 @@ const HeadingNav = forwardRef<HTMLDivElement, props>(({ className, style, ...res
         clearTimeout(scrollTimeoutRef.current);
       }
     };
-  }, [headings, updateActiveHeadingInternal]);
+  }, [headings, updateActiveHeadingInternal, handleScroll]);
 
   const handleHeadingClick = (id: string, index: number) => {
     setActiveHeadingId(id);

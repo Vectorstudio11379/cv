@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { Flex, Row, Column, Text, Icon, ToggleButton } from ".";
 import styles from "./MegaMenu.module.scss";
@@ -42,7 +42,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ menuGroups, className, ...re
   const buttonRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const contentRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  useEffect(() => {
+  const updateDropdownPosition = useCallback(() => {
     if (activeDropdown && buttonRefs.current[activeDropdown]) {
       const buttonElement = buttonRefs.current[activeDropdown];
       if (buttonElement) {
@@ -72,6 +72,10 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ menuGroups, className, ...re
       setIsFirstAppearance(true);
     }
   }, [activeDropdown]);
+
+  useEffect(() => {
+    updateDropdownPosition();
+  }, [updateDropdownPosition]);
 
   // Reset animation flag after animation completes
   useEffect(() => {

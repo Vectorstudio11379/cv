@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Flex } from "@/once-ui/components";
 import styles from "./ScrollToTop.module.scss";
 import classNames from "classnames";
@@ -15,21 +15,21 @@ export const ScrollToTop = ({
 }: ScrollToTopProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     setIsVisible(window.scrollY > offset);
-  };
+  }, [offset]);
 
-  const scrollToTop = () => {
+  const scrollToTop = useCallback(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-  };
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [handleScroll]);
 
   return (
     <Flex

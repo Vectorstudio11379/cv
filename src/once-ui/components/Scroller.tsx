@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import classNames from "classnames";
 import { Flex, IconButton } from ".";
 import styles from "./Scroller.module.scss";
@@ -29,20 +29,21 @@ const Scroller: React.FC<ScrollerProps> = ({
   const [showPrevButton, setShowPrevButton] = useState<boolean>(false);
   const [showNextButton, setShowNextButton] = useState<boolean>(false);
 
+  const handleScroll = useCallback(() => {
+    const scroller = scrollerRef.current;
+    if (scroller) {
+      const scrollPosition = direction === "row" ? scroller.scrollLeft : scroller.scrollTop;
+      const maxScrollPosition =
+        direction === "row"
+          ? scroller.scrollWidth - scroller.clientWidth
+          : scroller.scrollHeight - scroller.clientHeight;
+      setShowPrevButton(scrollPosition > 0);
+      setShowNextButton(scrollPosition < maxScrollPosition - 1);
+    }
+  }, [direction]);
+
   useEffect(() => {
     const scroller = scrollerRef.current;
-    const handleScroll = () => {
-      if (scroller) {
-        const scrollPosition = direction === "row" ? scroller.scrollLeft : scroller.scrollTop;
-        const maxScrollPosition =
-          direction === "row"
-            ? scroller.scrollWidth - scroller.clientWidth
-            : scroller.scrollHeight - scroller.clientHeight;
-        setShowPrevButton(scrollPosition > 0);
-        setShowNextButton(scrollPosition < maxScrollPosition - 1);
-      }
-    };
-
     if (
       scroller &&
       (direction === "row"
@@ -53,7 +54,7 @@ const Scroller: React.FC<ScrollerProps> = ({
       scroller.addEventListener("scroll", handleScroll);
       return () => scroller.removeEventListener("scroll", handleScroll);
     }
-  }, [direction]);
+  }, [direction, handleScroll]);
 
   const handleScrollNext = () => {
     const scroller = scrollerRef.current;
