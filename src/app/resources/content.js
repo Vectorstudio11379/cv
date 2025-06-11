@@ -15,7 +15,7 @@ const person = {
 
 const newsletter = {
   display: true,
-  title: <>Subscribe to {person.firstName}'s Newsletter</>,
+  title: <>Subscribe to {person.firstName}&apos;s Newsletter</>,
   description: (
     <>
       I occasionally write about design, technology, and share thoughts on the intersection of
@@ -48,7 +48,7 @@ const home = {
   path: "/",
   image: "/images/og/home.jpg",
   label: "Home",
-  title: `${person.name}'s Portfolio`,
+  title: `${person.name}&apos;s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
   headline: <>iDeveloper</>,
   featured: {
@@ -57,7 +57,7 @@ const home = {
     href: "/work/building-once-ui-a-customizable-design-system",
   },  subline: (
     <>
-      HI i'm Timi, 
+      HI i&apos;m Timi, 
       i am a Web Developer at <img src="/trademark/5th.png" alt="Profile" style={{ display: "inline-flex", height: "1.5em", verticalAlign: "middle", marginLeft: "0.25em" }} />,
       where I craft intuitive
       <br /> user experiences. After hours, I build my own projects.
