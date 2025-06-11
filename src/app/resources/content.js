@@ -1,16 +1,16 @@
 import { Logo } from "@/once-ui/components";
+import { SplineModel } from "@/components/SplineModel";
 
 const person = {
-  firstName: "Selene",
-  lastName: "Yu",
+  firstName: "Elijah",
+  lastName: "Ezekiel",
   get name() {
     return `${this.firstName} ${this.lastName}`;
-  },
-  role: "Design Engineer",
-  avatar: "/images/avatar.jpg",
-  email: "example@gmail.com",
-  location: "Asia/Jakarta", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-  languages: ["English", "Bahasa"], // optional: Leave the array empty if you don't want to display languages
+  },  role: "Web Designer",
+  avatar: "/images/timi.jpeg", // path to your avatar image
+  email: "ezekielelijahkola@gmail.com",
+  location: "Africa/Lagos", // IANA time zone identifier for Nigeria/Abuja
+  languages: ["English (fluent)", "Yoruba", "Hausa"], // optional: Leave the array empty if you don't want to display languages
 };
 
 const newsletter = {
@@ -30,17 +30,12 @@ const social = [
   {
     name: "GitHub",
     icon: "github",
-    link: "https://github.com/once-ui-system/nextjs-starter",
+    link: "https://github.com/timi11379/",
   },
   {
     name: "LinkedIn",
     icon: "linkedin",
-    link: "https://www.linkedin.com/company/once-ui/",
-  },
-  {
-    name: "X",
-    icon: "x",
-    link: "",
+    link: "https://www.linkedin.com/in/elijah-kola-ezekiel-181301208?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
   },
   {
     name: "Email",
@@ -55,15 +50,16 @@ const home = {
   label: "Home",
   title: `${person.name}'s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Building bridges between design and code</>,
+  headline: <>iDeveloper</>,
   featured: {
     display: true,
-    title: <>Recent project: <strong className="ml-4">Once UI</strong></>,
+    title: <>Recent project: <strong className="ml-4">Web Development</strong></>,
     href: "/work/building-once-ui-a-customizable-design-system",
-  },
-  subline: (
+  },  subline: (
     <>
-      I'm Selene, a design engineer at <Logo icon={false} style={{ display: "inline-flex", top: "0.25em", marginLeft: "-0.25em" }}/>, where I craft intuitive
+      HI i'm Timi, 
+      i am a Web Developer at <img src="/trademark/5th.png" alt="Profile" style={{ display: "inline-flex", height: "1.5em", verticalAlign: "middle", marginLeft: "0.25em" }} />,
+      where I craft intuitive
       <br /> user experiences. After hours, I build my own projects.
     </>
   ),
@@ -83,17 +79,17 @@ const about = {
   },
   calendar: {
     display: true,
-    link: "https://cal.com",
+    link: "https://wa.me/2348123476832",
   },
   intro: {
     display: true,
     title: "Introduction",
     description: (
       <>
-        Selene is a Jakarta-based design engineer with a passion for transforming complex challenges
-        into simple, elegant design solutions. Her work spans digital interfaces, interactive
-        experiences, and the convergence of design and technology.
-      </>
+        I am an experienced web designer with a background in IT support, operations management, and customer service. 
+        I have worked as an IT Expert at Beacon Corporate Realty since July 2024, managing the company website, 
+        implementing SEO strategies, and editing videos. 
+        </>
     ),
   },
   work: {
@@ -101,44 +97,121 @@ const about = {
     title: "Work Experience",
     experiences: [
       {
-        company: "FLY",
-        timeframe: "2022 - Present",
-        role: "Senior Design Engineer",
+        company: "Beacon Corporate Realty",
+        timeframe: "2024-07 - Present",
+        role: "IT Expert",
         achievements: [
-          <>
-            Redesigned the UI/UX for the FLY platform, resulting in a 20% increase in user
-            engagement and 30% faster load times.
-          </>,
-          <>
-            Spearheaded the integration of AI tools into design workflows, enabling designers to
-            iterate 50% faster.
-          </>,
+          <>Managed and enhanced the company website, ensuring smooth functionality and user experience.</>,
+          <>Implemented SEO strategies to improve visibility and troubleshoot technical issues.</>,
+          <>Edited marketing and property tour videos, and operated drones for aerial footage.</>,
         ],
         images: [
-          // optional: leave the array empty if you don't want to display images
           {
-            src: "/images/projects/project-01/cover-01.jpg",
-            alt: "Once UI Project",
+            src: "/images/projects/project-01/beacon1.png",
+            alt: "Beacon Realty Website",
             width: 16,
             height: 9,
           },
         ],
       },
       {
-        company: "Creativ3",
-        timeframe: "2018 - 2022",
-        role: "Lead Designer",
+        company: "Aliola Global Services",
+        timeframe: "2024-02 - 2025-04",
+        role: "Operation Manager / Web Developer",
         achievements: [
-          <>
-            Developed a design system that unified the brand across multiple platforms, improving
-            design consistency by 40%.
-          </>,
-          <>
-            Led a cross-functional team to launch a new product line, contributing to a 15% increase
-            in overall company revenue.
-          </>,
+          <>Oversaw daily operations and managed resources for the company.</>,
+          <>Developed and maintained the company website and digital presence.</>,
+        ],
+        images: [
+          {
+            src: "/images/projects/ali.png",
+            alt: "Aliola Global Services Website",
+            width: 16,
+            height: 9,
+          },
+        ],
+      },
+      {
+        company: "Unateus Logistics",
+        timeframe: "2024-04 - 2024-07",
+        role: "Call Center Operator",
+        achievements: [
+          <>Provided product information and managed customer interactions.</>,
+        ],
+        images: [
+          {
+            src: "/images/projects/una.png",
+            alt: "Unateus Logistics",
+            width: 16,
+            height: 9,
+          },
+        ],
+      },
+      {
+        company: "Tom Ojo Global Sports Academy",
+        timeframe: "2023-03 - 2024-04",
+        role: "IT Technician / Web Developer",
+        achievements: [
+          <>Handled software installations and workstation setups.</>,
+        ],
+        images: [
+          {
+            src: "/images/projects/tom.png",
+            alt: "Tom Ojo Global Sports Academy",
+            width: 16,
+            height: 9,
+          },
+        ],
+      },
+      {
+        company: "Siloam Nursery and Primary School",
+        timeframe: "2021-03 - 2023-07",
+        role: "Teacher",
+        achievements: [
+          <>Taught and mentored students in a classroom setting.</>,
         ],
         images: [],
+      },
+      {
+        company: "Abdulazeez Cybercafe",
+        timeframe: "2019-03 - 2020-08",
+        role: "Computer Operator",
+        achievements: [
+          <>Provided computer operation services and support.</>,
+        ],
+        images: [],
+      },
+      {
+        company: "Dangote Cement Factory",
+        timeframe: "2019-03 - 2019-09",
+        role: "Laboratory Technician",
+        achievements: [
+          <>Assisted in laboratory operations and quality control.</>,
+        ],
+        images: [
+          {
+            src: "/images/projects/dan.png",
+            alt: "Dangote Cement Factory",
+            width: 16,
+            height: 9,
+          },
+        ],
+      },
+      {
+        company: "5th Element Media Group",
+        timeframe: "2024-07 - Present",
+        role: "Web Developer",
+        achievements: [
+          <>Developing and maintaining web solutions for media and marketing projects.</>,
+        ],
+        images: [
+          {
+            src: "/images/projects/5th.png",
+            alt: "5th Element Media Group",
+            width: 16,
+            height: 9,
+          },
+        ],
       },
     ],
   },
@@ -147,12 +220,20 @@ const about = {
     title: "Studies",
     institutions: [
       {
-        name: "University of Jakarta",
-        description: <>Studied software engineering.</>,
+        name: "Nuhu Bamalli Polytechnic",
+        description: <>Diploma in Computer Engineering (2020-2023)</>,
       },
       {
-        name: "Build the Future",
-        description: <>Studied online marketing and personal branding.</>,
+        name: "Google Digital Garage",
+        description: <>Google Certificate (2022-2023)</>,
+      },
+      {
+        name: "Google Analytics Academy",
+        description: <>Google Certificate (2023)</>,
+      },
+      {
+        name: "Google IT Support",
+        description: <>Google Certificate (2023)</>,
       },
     ],
   },
@@ -161,36 +242,24 @@ const about = {
     title: "Technical skills",
     skills: [
       {
-        title: "Figma",
-        description: <>Able to prototype in Figma with Once UI with unnatural speed.</>,
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          {
-            src: "/images/projects/project-01/cover-02.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-          {
-            src: "/images/projects/project-01/cover-03.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-        ],
+        title: "Computer Operation",
+        description: <>Proficient in computer operation (93%).</>,
+        images: [],
       },
       {
-        title: "Next.js",
-        description: <>Building next gen apps with Next.js + Once UI + Supabase.</>,
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          {
-            src: "/images/projects/project-01/cover-04.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-        ],
+        title: "Web Design",
+        description: <>Skilled in web design (89%).</>,
+        images: [],
+      },
+      {
+        title: "Time Management",
+        description: <>Excellent time management skills (95%).</>,
+        images: [],
+      },
+      {
+        title: "Video Editing",
+        description: <>Proficient in video editing (70%).</>,
+        images: [],
       },
     ],
   },
@@ -223,44 +292,44 @@ const gallery = {
   // These are placeholder images, replace with your own
   images: [
     {
-      src: "/images/gallery/horizontal-1.jpg",
+      src: "/images/projects/dan.png",
       alt: "image",
       orientation: "horizontal",
     },
     {
-      src: "/images/gallery/horizontal-2.jpg",
+      src: "/images/projects/flower.png",
       alt: "image",
       orientation: "horizontal",
     },
     {
-      src: "/images/gallery/horizontal-3.jpg",
+      src: "/images/projects/pmx.png",
       alt: "image",
       orientation: "horizontal",
     },
     {
-      src: "/images/gallery/horizontal-4.jpg",
+      src: "/images/projects/rebottle.png",
       alt: "image",
       orientation: "horizontal",
     },
     {
-      src: "/images/gallery/vertical-1.jpg",
+      src: "/images/projects/project-01/beacon.png",
       alt: "image",
-      orientation: "vertical",
+      orientation: "horizontal",
     },
     {
-      src: "/images/gallery/vertical-2.jpg",
+      src: "/images/projects/twist.png",
       alt: "image",
-      orientation: "vertical",
+      orientation: "horizontal",
     },
     {
-      src: "/images/gallery/vertical-3.jpg",
+      src: "/images/projects/ipanache.png",
       alt: "image",
-      orientation: "vertical",
+      orientation: "horizontal",
     },
     {
-      src: "/images/gallery/vertical-4.jpg",
+      src: "/images/projects/heaven.png",
       alt: "image",
-      orientation: "vertical",
+      orientation: "horizontal",
     },
   ],
 };
