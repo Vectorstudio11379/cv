@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, forwardRef, ReactNode } from "react";
+import React, { useState, useRef, useEffect, forwardRef, ReactNode, useCallback } from "react";
 import classNames from "classnames";
 import { DropdownWrapper, Flex, Icon, IconButton, Input, InputProps, Option } from ".";
 import inputStyles from "./Input.module.scss";
@@ -56,12 +56,11 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
       setIsFocused(true);
     };
 
-    const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-      if (selectRef.current && !selectRef.current.contains(event.relatedTarget as Node)) {
-        setIsFocused(false);
+    const handleBlur = useCallback((event: React.FocusEvent<HTMLInputElement>) => {
+      if (!event.relatedTarget || !selectRef.current?.contains(event.relatedTarget)) {
         setIsDropdownOpen(false);
       }
-    };
+    }, [selectRef, setIsDropdownOpen]);
 
     const handleSelect = (value: string) => {
       if (onSelect) onSelect(value);
