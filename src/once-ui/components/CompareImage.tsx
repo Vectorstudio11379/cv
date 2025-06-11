@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Flex, SmartImage, IconButton } from ".";
 import styles from "./CompareImage.module.scss";
 
@@ -35,51 +35,43 @@ const renderContent = (content: SideContent, clipPath: string) => {
 };
 
 export const CompareImage = ({ leftContent, rightContent, ...rest }: CompareImageProps) => {
+  const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
 
-  const handleMouseDown = () => {
-    isDragging.current = true;
-  };
-
-  const handleMouseUp = () => {
-    isDragging.current = false;
-  };
-
-  const updatePosition = (clientX: number) => {
-    if (!isDragging.current || !containerRef.current) return;
-
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isDragging || !containerRef.current) return;
+    
     const rect = containerRef.current.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const containerWidth = rect.width;
+    const x = e.clientX - rect.left;
+    const percentage = (x / rect.width) * 100;
+    setPosition(Math.min(Math.max(percentage, 0), 100));
+  }, [isDragging]);
 
-    // Calculate percentage (constrained between 0 and 100)
-    const newPosition = Math.max(0, Math.min(100, (x / containerWidth) * 100));
-    setPosition(newPosition);
-  };
-
-  const handleMouseMove = (e: MouseEvent) => {
-    updatePosition(e.clientX);
-  };
-
-  const handleTouchMove = (e: TouchEvent) => {
-    updatePosition(e.touches[0].clientX);
-  };
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    if (!isDragging || !containerRef.current) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.touches[0].clientX - rect.left;
+    const percentage = (x / rect.width) * 100;
+    setPosition(Math.min(Math.max(percentage, 0), 100));
+  }, [isDragging]);
 
   useEffect(() => {
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-    document.addEventListener("touchmove", handleTouchMove);
-    document.addEventListener("touchend", handleMouseUp);
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('touchmove', handleTouchMove);
+      window.addEventListener('mouseup', () => setIsDragging(false));
+      window.addEventListener('touchend', () => setIsDragging(false));
+    }
 
     return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-      document.removeEventListener("touchmove", handleTouchMove);
-      document.removeEventListener("touchend", handleMouseUp);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('mouseup', () => setIsDragging(false));
+      window.removeEventListener('touchend', () => setIsDragging(false));
     };
-  }, []);
+  }, [isDragging, handleMouseMove, handleTouchMove]);
 
   return (
     <Flex
@@ -103,8 +95,8 @@ export const CompareImage = ({ leftContent, rightContent, ...rest }: CompareImag
         style={{
           left: `${position}%`,
         }}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleMouseDown}
+        onMouseDown={() => setIsDragging(true)}
+        onTouchStart={() => setIsDragging(true)}
       >
         <Flex width="1" fillHeight background="neutral-strong" zIndex={2} />
       </Flex>
@@ -115,8 +107,8 @@ export const CompareImage = ({ leftContent, rightContent, ...rest }: CompareImag
         style={{
           left: `${position}%`,
         }}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleMouseDown}
+        onMouseDown={() => setIsDragging(true)}
+        onTouchStart={() => setIsDragging(true)}
       />
     </Flex>
   );

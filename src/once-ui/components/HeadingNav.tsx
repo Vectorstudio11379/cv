@@ -16,24 +16,70 @@ const HeadingNav = forwardRef<HTMLDivElement, props>(({ className, style, ...res
   const pendingUpdateRef = useRef<string | null>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isUpdatingRef = useRef<boolean>(false);
+  const tickingRef = useRef(false);
 
-  const updateActiveHeadingInternal = useCallback(
-    (id: string) => {
-      const index = headings.findIndex((h) => h.id === id);
-      if (index !== -1) {
-        setActiveHeadingId(id);
-        setActiveIndex(index);
+  const updateActiveHeadingInternal = useCallback((id: string) => {
+    const index = headings.findIndex((h) => h.id === id);
+    if (index !== -1) {
+      setActiveHeadingId(id);
+      setActiveIndex(index);
 
-        if (indicatorRef.current) {
-          indicatorRef.current.style.top = `calc(${index} * var(--static-space-32))`;
-        }
-
-        lastUpdateTimeRef.current = Date.now();
-        isUpdatingRef.current = false;
+      if (indicatorRef.current) {
+        indicatorRef.current.style.top = `calc(${index} * var(--static-space-32))`;
       }
-    },
-    [headings],
-  );
+
+      lastUpdateTimeRef.current = Date.now();
+      isUpdatingRef.current = false;
+
+      if (pendingUpdateRef.current) {
+        const nextId = pendingUpdateRef.current;
+        pendingUpdateRef.current = null;
+        updateActiveHeadingInternal(nextId);
+      }
+    }
+  }, [headings]);
+
+  const findActiveHeading = useCallback(() => {
+    const scrollPosition = window.scrollY;
+    let activeId = headings[0]?.id;
+    let closestPosition = -Infinity;
+
+    const headingPositions = new Map<string, number>();
+
+    const calculateHeadingPositions = () => {
+      headings
+        .map((heading) => document.getElementById(heading.id))
+        .filter(Boolean)
+        .forEach((el) => {
+          if (el) {
+            headingPositions.set(el.id, el.getBoundingClientRect().top + window.scrollY - 150);
+          }
+        });
+    };
+
+    calculateHeadingPositions();
+
+    headingPositions.forEach((position, id) => {
+      if (position <= scrollPosition && position > closestPosition) {
+        closestPosition = position;
+        activeId = id;
+      }
+    });
+
+    if (activeId) {
+      updateActiveHeadingInternal(activeId);
+    }
+  }, [headings, updateActiveHeadingInternal]);
+
+  const handleScroll = useCallback(() => {
+    if (!tickingRef.current) {
+      window.requestAnimationFrame(() => {
+        findActiveHeading();
+        tickingRef.current = false;
+      });
+      tickingRef.current = true;
+    }
+  }, [findActiveHeading]);
 
   useEffect(() => {
     if (headings.length === 0) return;
@@ -56,66 +102,8 @@ const HeadingNav = forwardRef<HTMLDivElement, props>(({ className, style, ...res
 
     calculateHeadingPositions();
 
-    const debouncedUpdateActiveHeading = (id: string) => {
-      const now = Date.now();
-
-      if (isUpdatingRef.current) {
-        pendingUpdateRef.current = id;
-        return;
-      }
-
-      if (now - lastUpdateTimeRef.current < 200) {
-        pendingUpdateRef.current = id;
-
-        if (scrollTimeoutRef.current) {
-          clearTimeout(scrollTimeoutRef.current);
-        }
-
-        scrollTimeoutRef.current = setTimeout(() => {
-          if (pendingUpdateRef.current) {
-            isUpdatingRef.current = true;
-            updateActiveHeadingInternal(pendingUpdateRef.current);
-            pendingUpdateRef.current = null;
-          }
-        }, 200);
-
-        return;
-      }
-
-      isUpdatingRef.current = true;
-      updateActiveHeadingInternal(id);
-    };
-
-    const findActiveHeading = () => {
-      const scrollPosition = window.scrollY;
-
-      let activeId = headings[0]?.id;
-      let closestPosition = -Infinity;
-
-      headingPositions.forEach((position, id) => {
-        if (position <= scrollPosition && position > closestPosition) {
-          closestPosition = position;
-          activeId = id;
-        }
-      });
-
-      if (activeId) {
-        debouncedUpdateActiveHeading(activeId);
-      }
-    };
-
-    let ticking = false;
-    const handleScroll = useCallback(() => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          findActiveHeading();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }, [findActiveHeading]);
-
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", calculateHeadingPositions);
 
     observerRef.current = new IntersectionObserver(
       (entries) => {
@@ -129,7 +117,7 @@ const HeadingNav = forwardRef<HTMLDivElement, props>(({ className, style, ...res
               return aRect.top - bRect.top;
             });
 
-            debouncedUpdateActiveHeading(enteringEntries[0].target.id);
+            updateActiveHeadingInternal(enteringEntries[0].target.id);
           }
         }
       },
@@ -144,8 +132,6 @@ const HeadingNav = forwardRef<HTMLDivElement, props>(({ className, style, ...res
         observerRef.current.observe(element);
       }
     });
-
-    window.addEventListener("resize", calculateHeadingPositions);
 
     findActiveHeading();
 
