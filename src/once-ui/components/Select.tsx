@@ -52,23 +52,24 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
     const selectRef = useRef<HTMLDivElement | null>(null);
     const clearButtonRef = useRef<HTMLButtonElement>(null);
 
-    const handleFocus = () => {
+    const handleFocus = useCallback(() => {
       setIsFocused(true);
-    };
+    }, []);
 
     const handleBlur = useCallback((event: React.FocusEvent<HTMLInputElement>) => {
       if (!event.relatedTarget || !selectRef.current?.contains(event.relatedTarget)) {
         setIsDropdownOpen(false);
+        setIsFocused(false);
       }
-    }, [selectRef, setIsDropdownOpen]);
+    }, [selectRef]);
 
-    const handleSelect = (value: string) => {
+    const handleSelect = useCallback((value: string) => {
       if (onSelect) onSelect(value);
       setIsDropdownOpen(false);
       setIsFilled(true);
-    };
+    }, [onSelect]);
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
       if (!isFocused && event.key !== "Enter") return;
 
       switch (event.key) {
@@ -109,9 +110,9 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         default:
           break;
       }
-    };
+    }, [isFocused, isDropdownOpen, highlightedIndex, options, handleSelect]);
 
-    const handleClearSearch = (e: React.MouseEvent) => {
+    const handleClearSearch = useCallback((e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
       setSearchQuery("");
@@ -120,25 +121,25 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
       if (input) {
         input.focus();
       }
-    };
+    }, [selectRef]);
+
+    const handleClickOutside = useCallback((event: MouseEvent) => {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(event.target as Node) &&
+        !clearButtonRef.current?.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    }, [selectRef, clearButtonRef]);
+
+    const handleFocusOut = useCallback((event: FocusEvent) => {
+      if (event.target instanceof HTMLInputElement) {
+        handleBlur(event as unknown as React.FocusEvent<HTMLInputElement>);
+      }
+    }, [handleBlur]);
 
     useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          selectRef.current &&
-          !selectRef.current.contains(event.target as Node) &&
-          !clearButtonRef.current?.contains(event.target as Node)
-        ) {
-          setIsDropdownOpen(false);
-        }
-      };
-
-      const handleFocusOut = (event: FocusEvent) => {
-        if (event.target instanceof HTMLInputElement) {
-          handleBlur(event as unknown as React.FocusEvent<HTMLInputElement>);
-        }
-      };
-
       document.addEventListener("mousedown", handleClickOutside);
       document.addEventListener("focusout", handleFocusOut);
 
@@ -146,7 +147,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         document.removeEventListener("mousedown", handleClickOutside);
         document.removeEventListener("focusout", handleFocusOut);
       };
-    }, [handleBlur, selectRef, clearButtonRef, setIsDropdownOpen]);
+    }, [handleClickOutside, handleFocusOut]);
 
     return (
       <DropdownWrapper
