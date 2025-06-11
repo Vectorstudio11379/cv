@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { baseURL } from "@/app/resources";
 import { person } from "@/app/resources/content";
+import Image from "next/image";
 
 export const runtime = "edge";
 
@@ -47,11 +48,12 @@ export async function GET(request: Request) {
             gap: "5rem",
           }}
         >
-          <img
+          <Image
             src={baseURL + person.avatar.replace(/\.(jpg|png)$/, "-optimized.webp")}
+            alt="Profile Avatar"
+            width={192}
+            height={192}
             style={{
-              width: "12rem",
-              height: "12rem",
               objectFit: "cover",
               borderRadius: "100%",
             }}
