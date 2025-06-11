@@ -1,5 +1,6 @@
 import { Logo } from "@/once-ui/components";
 import { SplineModel } from "@/components/SplineModel";
+import Image from "next/image";
 
 const person = {
   firstName: "Elijah",
@@ -58,7 +59,7 @@ const home = {
   },  subline: (
     <>
       HI i&apos;m Timi, 
-      i am a Web Developer at <img src="/trademark/5th.png" alt="Profile" style={{ display: "inline-flex", height: "1.5em", verticalAlign: "middle", marginLeft: "0.25em" }} />,
+      i am a Web Developer at <Image src="/trademark/5th.png" alt="5th Element Media Group" width={24} height={24} style={{ display: "inline-flex", verticalAlign: "middle", marginLeft: "0.25em" }} />,
       where I craft intuitive
       <br /> user experiences. After hours, I build my own projects.
     </>
