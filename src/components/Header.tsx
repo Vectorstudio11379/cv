@@ -15,7 +15,7 @@ type TimeDisplayProps = {
   locale?: string; // Optionally allow locale, defaulting to system locale
 };
 
-const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = navigator.language }) => {
+const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = typeof navigator !== 'undefined' ? navigator.language : 'en-US' }) => {
   const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
