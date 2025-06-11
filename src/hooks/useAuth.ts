@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { auth } from '@/utils/auth';
 
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const handleStorageChange = useCallback(() => {
+    setIsAuthenticated(auth.isAuthenticated());
+  }, []);
 
   useEffect(() => {
     // Check authentication status on mount
@@ -11,13 +15,9 @@ export const useAuth = () => {
     setIsLoading(false);
 
     // Listen for storage changes
-    const handleStorageChange = () => {
-      setIsAuthenticated(auth.isAuthenticated());
-    };
-
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
+  }, [handleStorageChange]);
 
   const login = () => {
     auth.login();

@@ -100,7 +100,7 @@ const HoloFx: React.FC<HoloFxProps> = ({ children, shine, burn, texture, ...rest
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [ref]);
 
   return (
     <Flex overflow="hidden" className={styles.holoFx} ref={ref} {...rest}>

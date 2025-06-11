@@ -147,7 +147,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         document.removeEventListener("mousedown", handleClickOutside);
         document.removeEventListener("focusout", handleFocusOut);
       };
-    }, []);
+    }, [handleBlur, selectRef, clearButtonRef, setIsDropdownOpen]);
 
     return (
       <DropdownWrapper

@@ -111,7 +111,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       return () => {
         document.removeEventListener("mousemove", handleMouseMove);
       };
-    }, []);
+    }, [backgroundRef]);
 
     useEffect(() => {
       let animationFrameId: number;

@@ -428,7 +428,7 @@ export const Kbar: React.FC<KbarProps> = ({ items, children, ...rest }) => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [setIsOpen]);
 
   return (
     <>
