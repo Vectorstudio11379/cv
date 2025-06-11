@@ -1,13 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import * as cookie from "cookie";
+import { NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
-  const cookieHeader = request.headers.get("cookie") || "";
-  const cookies = cookie.parse(cookieHeader);
+// Mark this route as static
+export const dynamic = "force-static";
+export const revalidate = 3600; // Revalidate every hour
 
-  if (cookies.authToken === "authenticated") {
-    return NextResponse.json({ authenticated: true }, { status: 200 });
-  } else {
-    return NextResponse.json({ authenticated: false }, { status: 401 });
-  }
+// This route is now just a placeholder for static export compatibility
+export async function GET() {
+  return NextResponse.json({ status: "ok" }, { status: 200 });
 }
